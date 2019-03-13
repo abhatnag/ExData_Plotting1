@@ -1,8 +1,13 @@
-library(data.table)
-library(dplyr)
+if( !("dplyr" %in% (.packages())) || !("data.table" %in% (.packages())) )
+  source("setEnvironment.R")
 
-plot_data<-fread(("./data/household_power_consumption.txt"),
-  select=c("Global_active_power","Date"))
+if(is_empty(plot_data) || !is.data.frame(plot_data))
+  plot_data<-populate_data("./data/household_power_consumption.txt",
+                           c("Voltage","Global_active_power",
+                             "Global_reactive_power",
+                             "Sub_metering_1","Sub_metering_2","Sub_metering_3",
+                             "Date", "Time"))
+
 
 # references: https://www.r-bloggers.com/date-formats-in-r/
 # http://rdpeng.github.io/RProgDA/working-with-large-datasets.html
